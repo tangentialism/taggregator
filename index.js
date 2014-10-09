@@ -20,21 +20,23 @@ var Taggregator = function(urls, options) {
 
   var parsePayload = function(data) {
     return Promise.try(function() {
-      // is file by URL or by tag?
+      // We can process files with either a "tags" or "urls" key, or both.
       if (data.tags) {
         // process tags
         Object.keys(data.tags).forEach(function(tag) {
           processTag(tag, data.tags[tag]);
         });
       }
-      else if (data.urls) {
+      
+      if (data.urls) {
         // process urls
         Object.keys(data.urls).forEach(function(url) {
           processUrl(url, data.urls[url]);
         });
       }
-      else {
-        throw new Error('You need either a "keys" or "urls" object')
+      
+      if (!data.tags && !data.urls) {
+        throw new Error('You need either a "keys" or "urls" object');
       }
 
       Object.keys(self.db.tags).forEach(function(tag) {
