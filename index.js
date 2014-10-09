@@ -4,11 +4,15 @@ var http = Promise.promisifyAll(require('needle'));
 var _ = require('lodash');
 var valid = require('validator');
 
-var Taggregator = function(urls) {
+var Taggregator = function(urls, options) {
   this.db = {
     sources: [],
     tags: {}
   };
+
+  this.options = _.extend({
+    tagWithFilename: false
+  }, options);
 
   this.urls = [].concat(urls);
 
@@ -47,6 +51,10 @@ var Taggregator = function(urls) {
     vals.forEach(function(url) {
       insertRecord(tag, url);
     });
+
+    if (self.options.tagWithFilename) {
+      insertRecord(extractBasename(url), url)
+    }
   };
 
   var processUrl = function(url, vals) {
@@ -54,6 +62,10 @@ var Taggregator = function(urls) {
     vals.forEach(function(tag) {
       insertRecord(tag, url);
     });
+
+    if (self.options.tagWithFilename) {
+      insertRecord(extractBasename(url), url)
+    }
   };
 
   var insertRecord = function(tag, url) {
@@ -90,6 +102,14 @@ var Taggregator = function(urls) {
       console.log('Fetch error: ' + e.message);
     });
   };
+
+  // This method is kind of shady. Won't work on domain-only URLs.
+  var extractBasename = function(url) {
+    var urlParts = url.split('/');
+    var filename = urlParts.pop();
+    var basename = filename.split('.')[0];
+    return basename;
+  }
 
   var process = Promise.method(function() {
     return Promise.try(function() {
