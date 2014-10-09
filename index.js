@@ -2,6 +2,7 @@ var Promise = require('bluebird');
 var util = require('util');
 var http = Promise.promisifyAll(require('needle'));
 var _ = require('lodash');
+var valid = require('validator');
 
 var Taggregator = function(urls) {
   this.db = {
@@ -58,6 +59,17 @@ var Taggregator = function(urls) {
   var insertRecord = function(tag, url) {
     if (typeof tag === Number) {
       tag = Number.toString(tag);
+    }
+
+    if (!valid.isURL(url, {require_protocol: true})) {
+      // maybe it's just missing the protocol.
+      if (valid.isURL(url, {require_protocol: false})) {
+        url = 'http://' + url;
+      }
+      // or, uh, maybe it's just really bad.
+      if (!valid.isURL(url, {require_protocol: true})) {
+        throw new Error('Attempted to insert invalid URL');
+      }
     }
 
     if (self.db.tags[tag] && util.isArray(self.db.tags[tag])) {
