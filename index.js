@@ -82,7 +82,7 @@ var Taggregator = function(urls, options) {
       }
       // or, uh, maybe it's just really bad.
       if (!valid.isURL(url, {require_protocol: true})) {
-        throw new Error('Attempted to insert invalid URL');
+        throw new Error('Attempted to insert invalid URL:', url);
       }
     }
 
