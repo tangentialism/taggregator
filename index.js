@@ -52,11 +52,11 @@ var Taggregator = function(urls, options) {
     // File URLs by parsing through tags' associated urls
     vals.forEach(function(url) {
       insertRecord(tag, url);
-    });
 
-    if (self.options.tagWithFilename) {
-      insertRecord(extractBasename(url), url)
-    }
+      if (self.options.tagWithFilename) {
+        insertRecord(extractBasename(url), url)
+      }
+    });
   };
 
   var processUrl = function(url, vals) {

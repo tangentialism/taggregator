@@ -2,7 +2,7 @@
   "name": "taggregator",
   "description": "A distributed tag db for bukkits and other urls",
   "author": "David Yee",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "index",
   "engines": {
     "node": "0.10.x"
