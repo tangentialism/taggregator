@@ -7,6 +7,10 @@
   "engines": {
     "node": "0.10.x"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tangentialism/taggregator.git"
+  },
   "dependencies": {
     "bluebird": "^2.3.5",
     "lodash": "^2.4.1",
