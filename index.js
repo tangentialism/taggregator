@@ -116,7 +116,7 @@ var Taggregator = function(urls, options) {
   var process = Promise.method(function() {
     return Promise.try(function() {
       if (self.urls.length == 0) {
-        throw new Error('You need to check at least one URL, man.');
+        throw new Error('You need to check at least one URL, buddy.');
       }
       return self.urls;
     })
